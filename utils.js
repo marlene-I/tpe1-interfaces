@@ -8,7 +8,7 @@ export const getRandomInteger = (limit) => Math.floor(Math.random() * limit);
  * changing saturation.
  * Returns a list with the HSL color string.
  */
-export const getRandomColorPallete = () => {
+export const getRandomColorPalette = () => {
     const hue = Math.round(Math.random() * 360);
     const huePallete = harmonize(hue, 30, 90, 30);
     const pallete = []
@@ -18,12 +18,7 @@ export const getRandomColorPallete = () => {
         pallete.push(...hslPairs);
     }
 
-    // Creating two last colors, closer to white to set canvas and body background
-    const lastHue = huePallete[huePallete.length-1];
-    const backgroundsHue = harmonize(lastHue, 180, 180, 1);
-    // next line allows me to destructure the background colors
-    const finalPallete = [`hsl(${backgroundsHue[0]}, 50%, 70%,0.8)`, `hsl(${backgroundsHue[1]}, 50%, 70%, 0.8)`, `hsl(${(backgroundsHue[1]+backgroundsHue[0])/2}, 50%, 70%,0.8)`].concat(pallete)
-    return finalPallete;
+    return pallete
 }
 
 /**
@@ -41,4 +36,10 @@ const harmonize = (hue, start, end, interval) => {
         huePallete.push(newHue);
     }
     return huePallete;
+}
+
+export const getComplementaryColor = (hsl) => {
+    const [h, s, l] = hsl.split("(")[1].replace(")","").split(",")
+    const complementaryHue = harmonize(h, 180, 180, 1)[1];
+    return `hsl(${complementaryHue}, ${s}, ${l}, 0.9)`
 }
